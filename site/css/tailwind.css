@@ -5,7 +5,6 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    /* color: #333333; */
     color: #EEE3C1;
 }
 
@@ -14,7 +13,5 @@ h1 {
 }
 
 body {
-    /* background-color: #f2f0ec;
-     */
      background-color: black;
 }
