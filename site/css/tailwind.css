@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+    font-family: "Merriweather", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    /* color: #333333; */
+    color: #EEE3C1;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+body {
+    /* background-color: #f2f0ec;
+     */
+     background-color: black;
+}

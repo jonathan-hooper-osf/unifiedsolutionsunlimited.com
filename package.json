@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./site/css/tailwind.css -o ./site/css/styles.css --minimize",
+    "watch": "npx @tailwindcss/cli -i site/css/tailwind.css -o site/css/styles.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.14",
+    "wrangler": "^4.3.0"
+  }
+}
