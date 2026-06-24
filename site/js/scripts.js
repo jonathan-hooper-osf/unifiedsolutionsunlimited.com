@@ -11,59 +11,38 @@ function updateClock() {
   document.getElementById('clock').textContent = `${dayName} • ${hours}:${minutes} ${ampm} EST`;
 }
 
-// Function to generate a random RGB color
-function getRandomColor() {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return { r, g, b, hex: `rgb(${r}, ${g}, ${b})` };
+// How long to wait between automatic hue drifts (ms)
+const HUE_DRIFT_INTERVAL = 2000;
+// How far around the color wheel to step each drift (degrees)
+const HUE_DRIFT_STEP = 25;
+// Fixed saturation/lightness keep every color harmonious and legible
+const HUE_SATURATION = 60;
+const HUE_LIGHTNESS = 55;
+
+// Function to advance the background to the next hue and wash it in
+function driftHue(state) {
+  state.hue = (state.hue + HUE_DRIFT_STEP) % 360;
+  document.body.style.backgroundColor = `hsl(${state.hue}, ${HUE_SATURATION}%, ${HUE_LIGHTNESS}%)`;
+  // Lightness drives whether dark or light text reads best
+  document.body.style.color = HUE_LIGHTNESS > 55 ? '#000000' : '#ffffff';
 }
 
-// Function to calculate a contrasting text color (black or white)
-function getContrastColor(r, g, b) {
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.5 ? '#000000' : '#ffffff';
-}
-
-// Function to generate a different contrasting color
-function getDifferentContrastColor(currentColor) {
-  let newColor;
-  do {
-    newColor = getRandomColor();
-  } while (newColor.hex === currentColor); // Ensure the new color is different
-  return newColor.hex;
-}
-
-// Function to handle color toggle
-function setupColorToggle() {
-  const toggleButton = document.getElementById('color-toggle');
-  toggleButton.addEventListener('click', () => {
-    const bg = getRandomColor();
-    const contrastText = getContrastColor(bg.r, bg.g, bg.b);
-    document.body.style.backgroundColor = bg.hex;
-    document.body.style.color = contrastText;
-  });
-
-  // Add hover effect to the circle
-  toggleButton.addEventListener('mouseenter', () => {
-    const currentBgColor = getComputedStyle(document.body).backgroundColor;
-    const hoverColor = getDifferentContrastColor(currentBgColor);
-    toggleButton.querySelector('circle').setAttribute('fill', hoverColor);
-  });
-
-  toggleButton.addEventListener('mouseleave', () => {
-    toggleButton.querySelector('circle').setAttribute('fill', 'none');
-  });
+// Start the automatic background hue drift
+function startColorDrift() {
+  const state = { hue: Math.floor(Math.random() * 360) };
+  // Wash in the first color immediately instead of waiting a full interval
+  driftHue(state);
+  setInterval(() => driftHue(state), HUE_DRIFT_INTERVAL);
 }
 
 // Initialize the scripts
 function initializeSolutions() {
   updateClock();
   setInterval(updateClock, 1000);
-  setupColorToggle();
+  startColorDrift();
 }
 
 // Export the functions for testing or modular use
 if (typeof module !== 'undefined') {
-  module.exports = { updateClock, getRandomColor, getContrastColor, getDifferentContrastColor, setupColorToggle, initializeSolutions };
+  module.exports = { updateClock, driftHue, startColorDrift, initializeSolutions };
 }

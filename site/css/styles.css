@@ -288,6 +288,12 @@ h1 {
 }
 body {
   background-color: black;
+  transition: background-color 2s ease-in-out, color 2s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";
